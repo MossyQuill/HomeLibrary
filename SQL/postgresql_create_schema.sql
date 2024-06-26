@@ -38,21 +38,28 @@ CREATE TABLE book(
 	publisher TEXT,
 	pub_location TEXT,
 	pub_date TEXT,
-	first_pub_date_vers TEXT,
+	first_pub_date_thisversion TEXT,
 	printer TEXT,
 	print_location TEXT,
 	binding_type	     VARCHAR(32) NOT NULL,
 
+
+/*Work Content Data*/
+	language	     VARCHAR(64) NOT NULL DEFAULT 'UNKNOWN',
+	original_language	VARCHAR(64) DEFAILT 'UNKNOWN',
+	keyword		     TEXT,
+/*Meta Ref Data*/
+	deweynumber	     VARCHAR(64),
+	isbn13		     VARCHAR(32) UNIQUE,
+
+/*Misc Data*/
 	back_cover	     BYTEA,
 	front_cover	     BYTEA,
 	callnumber	     VARCHAR(64),
 	category	     TEXT NOT NULL,
 	date_of_reform	     VARCHAR(32),
 	description	     TEXT NOT NULL,
-	deweynumber	     VARCHAR(64),
-	isbn13		     VARCHAR(32) UNIQUE,
-	keyword		     TEXT,
-	language	     VARCHAR(64) NOT NULL DEFAULT 'UNKNOWN',
+	
 	lccontrolnumber      VARCHAR(64),
 	location	     TEXT NOT NULL,
 	marc_tags            TEXT,
