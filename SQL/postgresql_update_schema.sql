@@ -26,3 +26,7 @@ ALTER TABLE videogame_copy_info ADD notes TEXT;
 /* Version 2024.05.30 */
 
 DROP FUNCTION delete_request CASCADE;
+
+/*MossyQuill Table Edits Version 1.01*/
+
+ALTER TABLE 

@@ -8,22 +8,48 @@ CREATE TABLE admin
 	username VARCHAR(128) NOT NULL PRIMARY KEY
 );
 
-CREATE TABLE book
-(
-	accession_number     TEXT,
-	alternate_id_1	     TEXT,
-	author		     TEXT NOT NULL,
-	back_cover	     BYTEA,
+/*MossyQuill Edits Start*/
+
+CREATE TABLE book(
+	accession_number     TEXT UNIQUE,
+	alternate_id_1	     TEXT UNIQUE,
+	id		     VARCHAR(32) UNIQUE,
+	entry_updated 	DATE,
+/*Authors and Contributors*/
+	author1_name	     TEXT NOT NULL,
+	author2_name		TEXT,
+	additional_authors	TEXT,
+	editors 		TEXT,
+	translators 		TEXT,
+	illustrators		TEXT,
+	binding 	TEXT,
+	other_contributors	TEXT,
+/*Work ID*/
+	title		     TEXT NOT NULL,
+	subtitle		TEXT,
+	volume_no	INTEGER,
+	total_vols	INTEGER,
+	version TEXT,
+	edition TEXT,
+	collection TEXT,
+	series TEXT,
+	series_no TEXT,
+	series_total TEXT,
+	publisher TEXT,
+	pub_location TEXT,
+	pub_date TEXT,
+	first_pub_date_vers TEXT,
+	printer TEXT,
+	print_location TEXT,
 	binding_type	     VARCHAR(32) NOT NULL,
+
+	back_cover	     BYTEA,
+	front_cover	     BYTEA,
 	callnumber	     VARCHAR(64),
 	category	     TEXT NOT NULL,
-	condition 	     TEXT,
 	date_of_reform	     VARCHAR(32),
 	description	     TEXT NOT NULL,
 	deweynumber	     VARCHAR(64),
-	edition		     VARCHAR(8) NOT NULL,
-	front_cover	     BYTEA,
-	id		     VARCHAR(32) UNIQUE,
 	isbn13		     VARCHAR(32) UNIQUE,
 	keyword		     TEXT,
 	language	     VARCHAR(64) NOT NULL DEFAULT 'UNKNOWN',
@@ -34,7 +60,6 @@ CREATE TABLE book
 	multivolume_set_isbn VARCHAR(32),
 	myoid		     BIGSERIAL UNIQUE,
 	origin		     TEXT,
-	originality 	     TEXT,
 	pdate		     VARCHAR(32) NOT NULL,
 	place		     TEXT NOT NULL,
 	price		     NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
@@ -42,7 +67,7 @@ CREATE TABLE book
 	purchase_date	     VARCHAR(32),
 	quantity	     INTEGER NOT NULL DEFAULT 1,
 	target_audience	     TEXT,
-	title		     TEXT NOT NULL,
+
 	type		     VARCHAR(16) NOT NULL DEFAULT 'Book',
 	url		     TEXT,
 	volume_number	     TEXT
