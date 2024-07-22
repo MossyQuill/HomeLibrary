@@ -2324,10 +2324,14 @@ void biblioteq::slotAbout(void)
 #else
      arg(tr("is not available")));
 #endif
+  m_about->button(QMessageBox::Close)->setShortcut(tr("Ctrl+W"));
   m_about->setTextFormat(Qt::RichText);
   m_about->setWindowIcon(windowIcon());
+  m_about->setWindowModality(Qt::NonModal);
   m_about->setWindowTitle(tr("BiblioteQ: About"));
-  m_about->exec();
+  m_about->showNormal();
+  m_about->activateWindow();
+  m_about->raise();
   QApplication::processEvents();
 }
 

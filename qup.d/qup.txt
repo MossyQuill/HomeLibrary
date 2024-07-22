@@ -15,17 +15,23 @@ file = Qt6PrintSupport.dll
 file = Qt6Sql.dll
 file = Qt6Widgets.dll
 file = Qt6Xml.dll
+file = libgcc_s_seh-1.dll
+file = libstdc++-6.dll
+file = libwinpthread-1.dll
+file_destination = .
+url = https://raw.githubusercontent.com/textbrowser/\ # First Part
+      qt-products/master/6.5_LTS/Windows              # Second Part
+
+[General]
+
 file = icudt68.dll
 file = icuin68.dll
 file = icuuc68.dll
 file = libcrypto-3-x64.dll
-file = libgcc_s_seh-1.dll
 file = libiconv-2.dll
 file = libintl-9.dll
 file = libpq.dll
 file = libssl-3-x64.dll
-file = libstdc++-6.dll
-file = libwinpthread-1.dll
 file = libxml2.dll
 file = libxslt.dll
 file = yaz4j.dll
@@ -42,6 +48,48 @@ file = biblioteq.conf
 file = book.png
 file_destination = .
 url = https://github.com/textbrowser/biblioteq/releases/download/qup
+
+[General]
+
+file = plugins/designer/qaxwidget.dll
+file = plugins/designer/qquickwidget.dll
+file = plugins/generic/qtuiotouchplugin.dll
+file = plugins/iconengines/qsvgicon.dll
+file = plugins/imageformats/qgif.dll
+file = plugins/imageformats/qicns.dll
+file = plugins/imageformats/qico.dll
+file = plugins/imageformats/qjpeg.dll
+file = plugins/imageformats/qsvg.dll
+file = plugins/imageformats/qtga.dll
+file = plugins/imageformats/qtiff.dll
+file = plugins/imageformats/qwbmp.dll
+file = plugins/imageformats/qwebp.dll
+file = plugins/multimedia/ffmpegmediaplugin.dll
+file = plugins/multimedia/windowsmediaplugin.dll
+file = plugins/networkinformation/qnetworklistmanager.dll
+file = plugins/platforms/qdirect2d.dll
+file = plugins/platforms/qminimal.dll
+file = plugins/platforms/qoffscreen.dll
+file = plugins/platforms/qwindows.dll
+file = plugins/position/qtposition_nmea.dll
+file = plugins/position/qtposition_positionpoll.dll
+file = plugins/qmllint/quicklintplugin.dll
+file = plugins/qmltooling/qmldbg_debugger.dll
+file = plugins/qmltooling/qmldbg_inspector.dll
+file = plugins/qmltooling/qmldbg_local.dll
+file = plugins/qmltooling/qmldbg_messages.dll
+file = plugins/qmltooling/qmldbg_native.dll
+file = plugins/qmltooling/qmldbg_nativedebugger.dll
+file = plugins/qmltooling/qmldbg_preview.dll
+file = plugins/qmltooling/qmldbg_profiler.dll
+file = plugins/qmltooling/qmldbg_quickprofiler.dll
+file = plugins/qmltooling/qmldbg_server.dll
+file = plugins/qmltooling/qmldbg_tcp.dll
+file = plugins/sqldrivers/qsqlite.dll
+file = plugins/sqldrivers/qsqlpsql.dll
+file = plugins/styles/qwindowsvistastyle.dll
+url = https://raw.githubusercontent.com/textbrowser/\ # First Part
+      qt-products/master/6.5_LTS/Windows              # Second Part
 
 [General]
 
@@ -85,6 +133,7 @@ url = https://github.com/textbrowser/biblioteq/releases/download/qup
 
 executable = BiblioteQ_Intel.exe
 file = Windows-Installation.pdf
+file = qt.conf
 file_destination = Documentation
 local_executable = BiblioteQ.exe
 url = https://github.com/textbrowser/biblioteq/releases/download/qup
