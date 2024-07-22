@@ -485,83 +485,6 @@ CREATE TABLE item_request
 	FOREIGN KEY (memberid) REFERENCES member (memberid) ON DELETE CASCADE
 );
 
-CREATE OR REPLACE FUNCTION delete_book() RETURNS trigger AS '
-BEGIN
-	DELETE FROM item_borrower WHERE item_oid = old.myoid;
-	DELETE FROM member_history WHERE item_oid = old.myoid AND
-	type = ''Book'';
-	RETURN NULL;
-END;
-' LANGUAGE plpgsql;
-CREATE TRIGGER book_trigger AFTER DELETE ON book
-FOR EACH row EXECUTE PROCEDURE delete_book();
-
-CREATE OR REPLACE FUNCTION delete_cd() RETURNS trigger AS '
-BEGIN
-	DELETE FROM item_borrower WHERE item_oid = old.myoid;
-	DELETE FROM member_history WHERE item_oid = old.myoid AND
-	type = ''CD'';
-	RETURN NULL;
-END;
-' LANGUAGE 'plpgsql';
-CREATE TRIGGER cd_trigger AFTER DELETE ON cd
-FOR EACH row EXECUTE PROCEDURE delete_cd();
-
-CREATE OR REPLACE FUNCTION delete_dvd() RETURNS trigger AS '
-BEGIN
-	DELETE FROM item_borrower WHERE item_oid = old.myoid;
-	DELETE FROM member_history WHERE item_oid = old.myoid AND
-	type = ''DVD'';
-	RETURN NULL;
-END;
-' LANGUAGE 'plpgsql';
-CREATE TRIGGER dvd_trigger AFTER DELETE ON dvd
-FOR EACH row EXECUTE PROCEDURE delete_dvd();
-
-CREATE OR REPLACE FUNCTION delete_grey_literature() RETURNS trigger AS '
-BEGIN
-	DELETE FROM item_borrower WHERE item_oid = old.myoid;
-	DELETE FROM member_history WHERE item_oid = old.myoid AND
-	type = ''Grey Literature'';
-	RETURN NULL;
-END;
-' LANGUAGE plpgsql;
-CREATE TRIGGER grey_literature_trigger AFTER DELETE ON grey_literature
-FOR EACH row EXECUTE PROCEDURE delete_grey_literature();
-
-CREATE OR REPLACE FUNCTION delete_journal() RETURNS trigger AS '
-BEGIN
-	DELETE FROM item_borrower WHERE item_oid = old.myoid;
-	DELETE FROM member_history WHERE item_oid = old.myoid AND
-	type = ''Journal'';
-	RETURN NULL;
-END;
-' LANGUAGE 'plpgsql';
-CREATE TRIGGER journal_trigger AFTER DELETE ON journal
-FOR EACH row EXECUTE PROCEDURE delete_journal();
-
-CREATE OR REPLACE FUNCTION delete_magazine() RETURNS trigger AS '
-BEGIN
-	DELETE FROM item_borrower WHERE item_oid = old.myoid;
-	DELETE FROM member_history WHERE item_oid = old.myoid AND
-	type = ''Magazine'';
-	RETURN NULL;
-END;
-' LANGUAGE 'plpgsql';
-CREATE TRIGGER magazine_trigger AFTER DELETE ON magazine
-FOR EACH row EXECUTE PROCEDURE delete_magazine();
-
-CREATE OR REPLACE FUNCTION delete_videogame() RETURNS trigger AS '
-BEGIN
-	DELETE FROM item_borrower WHERE item_oid = old.myoid;
-	DELETE FROM member_history WHERE item_oid = old.myoid AND
-	type = ''Video Game'';
-	RETURN NULL;
-END;
-' LANGUAGE 'plpgsql';
-CREATE TRIGGER videogame_trigger AFTER DELETE ON videogame
-FOR EACH row EXECUTE PROCEDURE delete_videogame();
-
 CREATE TABLE book_binding_types
 (
 	binding_type TEXT NOT NULL PRIMARY KEY
@@ -640,6 +563,92 @@ CREATE TABLE videogame_ratings
 	videogame_rating TEXT NOT NULL PRIMARY KEY
 );
 
+
+/*End of table creation--Start function commands*/
+CREATE OR REPLACE FUNCTION delete_book() RETURNS trigger AS '
+BEGIN
+	DELETE FROM item_borrower WHERE item_oid = old.myoid;
+	DELETE FROM member_history WHERE item_oid = old.myoid AND
+	type = ''Book'';
+	RETURN NULL;
+END;
+' LANGUAGE plpgsql;
+CREATE TRIGGER book_trigger AFTER DELETE ON book
+FOR EACH row EXECUTE PROCEDURE delete_book();
+
+CREATE OR REPLACE FUNCTION delete_cd() RETURNS trigger AS '
+BEGIN
+	DELETE FROM item_borrower WHERE item_oid = old.myoid;
+	DELETE FROM member_history WHERE item_oid = old.myoid AND
+	type = ''CD'';
+	RETURN NULL;
+END;
+' LANGUAGE 'plpgsql';
+CREATE TRIGGER cd_trigger AFTER DELETE ON cd
+FOR EACH row EXECUTE PROCEDURE delete_cd();
+
+CREATE OR REPLACE FUNCTION delete_dvd() RETURNS trigger AS '
+BEGIN
+	DELETE FROM item_borrower WHERE item_oid = old.myoid;
+	DELETE FROM member_history WHERE item_oid = old.myoid AND
+	type = ''DVD'';
+	RETURN NULL;
+END;
+' LANGUAGE 'plpgsql';
+
+CREATE TRIGGER dvd_trigger AFTER DELETE ON dvd
+FOR EACH row EXECUTE PROCEDURE delete_dvd();
+
+CREATE OR REPLACE FUNCTION delete_grey_literature() RETURNS trigger AS '
+BEGIN
+	DELETE FROM item_borrower WHERE item_oid = old.myoid;
+	DELETE FROM member_history WHERE item_oid = old.myoid AND
+	type = ''Grey Literature'';
+	RETURN NULL;
+END;
+' LANGUAGE plpgsql;
+
+CREATE TRIGGER grey_literature_trigger AFTER DELETE ON grey_literature
+FOR EACH row EXECUTE PROCEDURE delete_grey_literature();
+
+CREATE OR REPLACE FUNCTION delete_journal() RETURNS trigger AS '
+BEGIN
+	DELETE FROM item_borrower WHERE item_oid = old.myoid;
+	DELETE FROM member_history WHERE item_oid = old.myoid AND
+	type = ''Journal'';
+	RETURN NULL;
+END;
+' LANGUAGE 'plpgsql';
+
+CREATE TRIGGER journal_trigger AFTER DELETE ON journal
+FOR EACH row EXECUTE PROCEDURE delete_journal();
+
+CREATE OR REPLACE FUNCTION delete_magazine() RETURNS trigger AS '
+BEGIN
+	DELETE FROM item_borrower WHERE item_oid = old.myoid;
+	DELETE FROM member_history WHERE item_oid = old.myoid AND
+	type = ''Magazine'';
+	RETURN NULL;
+END;
+' LANGUAGE 'plpgsql';
+
+CREATE TRIGGER magazine_trigger AFTER DELETE ON magazine
+FOR EACH row EXECUTE PROCEDURE delete_magazine();
+
+CREATE OR REPLACE FUNCTION delete_videogame() RETURNS trigger AS '
+BEGIN
+	DELETE FROM item_borrower WHERE item_oid = old.myoid;
+	DELETE FROM member_history WHERE item_oid = old.myoid AND
+	type = ''Video Game'';
+	RETURN NULL;
+END;
+' LANGUAGE 'plpgsql';
+
+CREATE TRIGGER videogame_trigger AFTER DELETE ON videogame
+FOR EACH row EXECUTE PROCEDURE delete_videogame();
+
+
+/*Role creation and permissions*/
 CREATE ROLE biblioteq_administrator INHERIT SUPERUSER;
 CREATE ROLE biblioteq_circulation INHERIT;
 CREATE ROLE biblioteq_circulation_librarian INHERIT;
@@ -1043,7 +1052,7 @@ CREATE POLICY member_history_policy ON member_history TO biblioteq_administrator
 CREATE POLICY member_history_dnt_biblioteq_patron_policy ON member_history_dnt TO biblioteq_patron USING (memberid = session_user);
 CREATE POLICY member_history_dnt_policy ON member_history_dnt TO biblioteq_administrator, biblioteq_circulation, biblioteq_membership USING (true);
 
-/* PostgreSQL 14 or newer is required. */
+/* PostgreSQL 14 or newer is required; file compression settings*/
 
 ALTER TABLE book_files ALTER file SET COMPRESSION DEFAULT;
 ALTER TABLE grey_literature_files ALTER file SET COMPRESSION DEFAULT;
