@@ -43,7 +43,6 @@ CREATE TABLE book(
 	print_location TEXT,
 	binding_type	     VARCHAR(32) NOT NULL,
 
-
 /*Work Content Data*/
 	language	     VARCHAR(64) NOT NULL DEFAULT 'UNKNOWN',
 	original_language	VARCHAR(64) DEFAILT 'UNKNOWN',
@@ -94,7 +93,7 @@ CREATE TABLE book_copy_info
 	PRIMARY KEY (copyid, item_oid)
 );
 
-CREATE TABLE book_files
+CREATE TABLE text_files
 (
 	description TEXT,
 	file	    BYTEA NOT NULL,
@@ -106,7 +105,7 @@ CREATE TABLE book_files
 	PRIMARY KEY (file_digest, item_oid)
 );
 
-CREATE TABLE cd
+CREATE TABLE music_disk
 (
 	accession_number TEXT,
 	artist		 TEXT NOT NULL,
@@ -133,7 +132,7 @@ CREATE TABLE cd
 	type		 VARCHAR(16) NOT NULL DEFAULT 'CD'
 );
 
-CREATE TABLE cd_copy_info
+CREATE TABLE music_copy_info
 (
 	copy_number INTEGER NOT NULL DEFAULT 1,
 	copyid	    VARCHAR(64) NOT NULL,
@@ -158,7 +157,7 @@ CREATE TABLE cd_songs
 	PRIMARY KEY (albumnum, item_oid, songnum)
 );
 
-CREATE TABLE dvd
+CREATE TABLE video_disk
 (
 	accession_number TEXT,
 	back_cover	 BYTEA,
@@ -187,7 +186,7 @@ CREATE TABLE dvd
 	type		 VARCHAR(16) NOT NULL DEFAULT 'DVD'
 );
 
-CREATE TABLE dvd_copy_info
+CREATE TABLE video_copy_info
 (
 	copy_number INTEGER NOT NULL DEFAULT 1,
 	copyid	    VARCHAR(64) NOT NULL,
@@ -217,19 +216,6 @@ CREATE TABLE grey_literature
 	notes		TEXT,
 	quantity	INTEGER NOT NULL DEFAULT 1,
 	type		VARCHAR(16) NOT NULL DEFAULT 'Grey Literature'
-);
-
-CREATE TABLE grey_literature_files
-(
-	description TEXT,
-	file	    BYTEA NOT NULL,
-	file_digest TEXT NOT NULL,
-	file_name   TEXT NOT NULL,
-	item_oid    BIGINT NOT NULL,
-	myoid	    BIGSERIAL NOT NULL,
-	FOREIGN KEY (item_oid) REFERENCES grey_literature (myoid)
-		    	       ON DELETE CASCADE,
-	PRIMARY KEY (file_digest, item_oid)
 );
 
 CREATE TABLE journal
@@ -273,18 +259,6 @@ CREATE TABLE journal_copy_info
 	PRIMARY KEY (copyid, item_oid)
 );
 
-CREATE TABLE journal_files
-(
-	description TEXT,
-	file	    BYTEA NOT NULL,
-	file_digest TEXT NOT NULL,
-	file_name   TEXT NOT NULL,
-	item_oid    BIGINT NOT NULL,
-	myoid	    BIGSERIAL NOT NULL,
-	FOREIGN KEY (item_oid) REFERENCES journal (myoid) ON DELETE CASCADE,
-	PRIMARY KEY (file_digest, item_oid)
-);
-
 CREATE TABLE magazine
 (
 	accession_number TEXT,
@@ -326,18 +300,6 @@ CREATE TABLE magazine_copy_info
 	PRIMARY KEY (copyid, item_oid)
 );
 
-CREATE TABLE magazine_files
-(
-	description TEXT,
-	file	    BYTEA NOT NULL,
-	file_digest TEXT NOT NULL,
-	file_name   TEXT NOT NULL,
-	item_oid    BIGINT NOT NULL,
-	myoid	    BIGSERIAL NOT NULL,
-	FOREIGN KEY (item_oid) REFERENCES magazine (myoid) ON DELETE CASCADE,
-	PRIMARY KEY (file_digest, item_oid)
-);
-
 CREATE TABLE photograph_collection
 (
 	about		 TEXT,
@@ -375,6 +337,18 @@ CREATE TABLE photograph
 	FOREIGN KEY (collection_oid) REFERENCES photograph_collection (myoid)
 		    		     ON DELETE CASCADE,
 	PRIMARY KEY (collection_oid, id)
+);
+
+CREATE TABLE image_files
+(
+	description TEXT,
+	file	    BYTEA NOT NULL,
+	file_digest TEXT NOT NULL,
+	file_name   TEXT NOT NULL,
+	item_oid    BIGINT NOT NULL,
+	myoid	    BIGSERIAL NOT NULL,
+	FOREIGN KEY (item_oid) REFERENCES photograph (myoid) ON DELETE CASCADE,
+	PRIMARY KEY (file_digest, item_oid)
 );
 
 CREATE TABLE videogame
@@ -415,6 +389,71 @@ CREATE TABLE videogame_copy_info
 	PRIMARY KEY (copyid, item_oid)
 );
 
+CREATE TABLE book_binding_types
+(
+	binding_type TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE book_conditions
+(
+	condition TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE book_originality
+(
+	originality TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE book_target_audiences
+(
+	target_audience	TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE cd_formats
+(
+	cd_format TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE dvd_aspect_ratios
+(
+	dvd_aspect_ratio TEXT NOT NULL PRIMARY KEY
+);
+
+
+CREATE TABLE grey_literature_types
+(
+	document_type TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE languages
+(
+	language TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE locations
+(
+	location TEXT NOT NULL,
+	type	 VARCHAR(32) NOT NULL,
+	PRIMARY KEY (location, type)
+);
+
+CREATE TABLE monetary_units
+(
+	monetary_unit TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE videogame_platforms
+(
+	videogame_platform TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE videogame_ratings
+(
+	videogame_rating TEXT NOT NULL PRIMARY KEY
+);
+
+
+/*User data collection*/
 CREATE TABLE member
 (
 	city			    VARCHAR(256) NOT NULL,
@@ -485,82 +524,10 @@ CREATE TABLE item_request
 	FOREIGN KEY (memberid) REFERENCES member (memberid) ON DELETE CASCADE
 );
 
-CREATE TABLE book_binding_types
-(
-	binding_type TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE book_conditions
-(
-	condition TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE book_originality
-(
-	originality TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE book_target_audiences
-(
-	target_audience	TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE cd_formats
-(
-	cd_format TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE dvd_aspect_ratios
-(
-	dvd_aspect_ratio TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE dvd_ratings
-(
-	dvd_rating TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE dvd_regions
-(
-	dvd_region TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE grey_literature_types
-(
-	document_type TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE languages
-(
-	language TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE locations
-(
-	location TEXT NOT NULL,
-	type	 VARCHAR(32) NOT NULL,
-	PRIMARY KEY (location, type)
-);
-
-CREATE TABLE monetary_units
-(
-	monetary_unit TEXT NOT NULL PRIMARY KEY
-);
-
 CREATE TABLE minimum_days
 (
 	days INTEGER NOT NULL,
 	type VARCHAR(16) NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE videogame_platforms
-(
-	videogame_platform TEXT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE videogame_ratings
-(
-	videogame_rating TEXT NOT NULL PRIMARY KEY
 );
 
 
