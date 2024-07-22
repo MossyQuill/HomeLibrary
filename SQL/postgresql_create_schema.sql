@@ -56,12 +56,10 @@ CREATE TABLE book(
 	front_cover	     BYTEA,
 	callnumber	     VARCHAR(64),
 	category	     TEXT NOT NULL,
-	date_of_reform	     VARCHAR(32),
-	description	     TEXT NOT NULL,
+	description	     TEXT,
 	
 	lccontrolnumber      VARCHAR(64),
 	location	     TEXT NOT NULL,
-	marc_tags            TEXT,
 	monetary_units	     VARCHAR(64) NOT NULL DEFAULT 'UNKNOWN',
 	multivolume_set_isbn VARCHAR(32),
 	myoid		     BIGSERIAL UNIQUE,
