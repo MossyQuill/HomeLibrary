@@ -11,7 +11,7 @@ CREATE TABLE admin
 /*MossyQuill Edits Start*/
 
 CREATE TABLE book(
-	accession_number     TEXT UNIQUE,
+	entry_number    INTEGER UNIQUE,
 	alternate_id_1	     TEXT UNIQUE,
 	id		     VARCHAR(32) UNIQUE,
 	entry_updated 	DATE,
@@ -22,7 +22,6 @@ CREATE TABLE book(
 	editors 		TEXT,
 	translators 		TEXT,
 	illustrators		TEXT,
-	binding 	TEXT,
 	other_contributors	TEXT,
 /*Work ID*/
 	title		     TEXT NOT NULL,
@@ -41,54 +40,47 @@ CREATE TABLE book(
 	first_pub_date_thisversion TEXT,
 	printer TEXT,
 	print_location TEXT,
-	binding_type	     VARCHAR(32) NOT NULL,
 
 /*Work Content Data*/
-	language	     VARCHAR(64) NOT NULL DEFAULT 'UNKNOWN',
+	language	     VARCHAR(64) NOT NULL DEFAULT 'English',
 	original_language	VARCHAR(64) DEFAILT 'UNKNOWN',
 	keyword		     TEXT,
+
 /*Meta Ref Data*/
 	deweynumber	     VARCHAR(64),
 	isbn13		     VARCHAR(32) UNIQUE,
+	multivolume_set_isbn VARCHAR(32),
+	callnumber	     VARCHAR(64),
 
 /*Misc Data*/
 	back_cover	     BYTEA,
 	front_cover	     BYTEA,
-	callnumber	     VARCHAR(64),
 	category	     TEXT NOT NULL,
-	description	     TEXT,
-	
+	content_description	     TEXT,
 	lccontrolnumber      VARCHAR(64),
-	location	     TEXT NOT NULL,
-	monetary_units	     VARCHAR(64) NOT NULL DEFAULT 'UNKNOWN',
-	multivolume_set_isbn VARCHAR(32),
 	myoid		     BIGSERIAL UNIQUE,
-	origin		     TEXT,
-	pdate		     VARCHAR(32) NOT NULL,
-	place		     TEXT NOT NULL,
-	price		     NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
-	publisher	     TEXT NOT NULL,
-	purchase_date	     VARCHAR(32),
-	quantity	     INTEGER NOT NULL DEFAULT 1,
+	copy_total	     INTEGER NOT NULL DEFAULT 1,
 	target_audience	     TEXT,
-
-	type		     VARCHAR(16) NOT NULL DEFAULT 'Book',
-	url		     TEXT,
-	volume_number	     TEXT
+	media_type		     VARCHAR(16) NOT NULL DEFAULT 'Book',
 );
 
 CREATE TABLE book_copy_info
 (
-	condition   TEXT,
-	copy_number INTEGER NOT NULL DEFAULT 1,
-	copyid	    VARCHAR(64) NOT NULL,
 	item_oid    BIGINT NOT NULL,
 	myoid	    BIGSERIAL UNIQUE,
+	copy_id 	VARCHAR(64) NOT NULL,
+	copy_number INTEGER NOT NULL DEFAULT 1,
+	copy_total INTEGER NOT NULL DEFAULT 1,
+	binding 	TEXT,
+	binding_type	     VARCHAR(32) NOT NULL,
+	price		     NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
+	monetary_units	     VARCHAR(64) NOT NULL DEFAULT 'UNKNOWN',
+	purchase_date	     VARCHAR(32),
+	item_condition 	TEXT,
 	notes	    TEXT,
-	originality TEXT,
-	status	    TEXT,
+	location	    TEXT,
 	FOREIGN KEY (item_oid) REFERENCES book (myoid) ON DELETE CASCADE,
-	PRIMARY KEY (copyid, item_oid)
+	PRIMARY KEY (copy_id, item_oid)
 );
 
 CREATE TABLE text_files
